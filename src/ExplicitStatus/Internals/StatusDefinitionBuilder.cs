@@ -47,6 +47,8 @@ namespace ExplicitStatus.Internals
         {
             IsDefault = true;
 
+            this.statusBuilder.Add(Status, this);
+
             return this.statusBuilder;
         }
     }
