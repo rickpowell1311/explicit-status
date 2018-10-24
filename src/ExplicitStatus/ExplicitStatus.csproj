@@ -5,9 +5,9 @@
     <Authors>Rick Powell</Authors>
     <Title>Explicit Status</Title>
     <Description>Explicitly define a status based on the state of a type</Description>
-    <PackageProjectUrl>https://github.com/rickpowell1311/client-rate-limiter</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/rickpowell1311/client-rate-limiter/master/LICENSE</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/rickpowell1311/client-rate-limiter</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/rickpowell1311/explicit-status</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/rickpowell1311/explicit-status/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/rickpowell1311/explicit-status</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
