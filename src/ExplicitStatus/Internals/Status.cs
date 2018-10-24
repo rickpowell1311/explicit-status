@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
+using System.Reflection;
 
 namespace ExplicitStatus.Internals
 {
@@ -38,7 +38,7 @@ namespace ExplicitStatus.Internals
                 }
 
                 bool conditionsMatch = true;
-                foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(typeof(T)))
+                foreach (var property in typeof(T).GetTypeInfo().DeclaredProperties)
                 {
                     if (!configuration.Ignored.Contains(property.Name) && !conditions.Select(c => c.MemberId).Contains(property.Name))
                     {

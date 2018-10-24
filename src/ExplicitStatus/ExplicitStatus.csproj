@@ -11,10 +11,4 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="System.ComponentModel.TypeConverter">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.ComponentModel.TypeConverter.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
