@@ -46,7 +46,7 @@ public class MyType
 {
     private readonly IStatus<MyType, MyStatus> _myStatus;
 
-    public MyStatus => _myStatus.Get(this);
+    public MyStatus Status => _myStatus.Get(this);
 
     public MyType()
     {
@@ -69,7 +69,7 @@ public class MyType
 {
     private readonly IStatus<MyType, MyStatus> _myStatus;
 
-    public MyStatus => _myStatus.Get(this);
+    public MyStatus Status => _myStatus.Get(this);
 
     public string RequiredField { get; set; }
 
@@ -97,7 +97,7 @@ public class MyType
 {
     private readonly IStatus<MyType, MyStatus> _myStatus;
 
-    public MyStatus => _myStatus.Get(this);
+    public MyStatus Status => _myStatus.Get(this);
 
     public string RequiredField { get; set; }
 
@@ -120,7 +120,7 @@ public class MyType
 {
     private readonly IStatus<MyType, MyStatus> _myStatus;
 
-    public MyStatus => _myStatus.Get(this);
+    public MyStatus Status => _myStatus.Get(this);
 
     public string RequiredField { get; set; }
 
