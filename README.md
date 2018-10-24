@@ -1,7 +1,7 @@
 ## Explicit status ##
 [![Build status](https://rickpowell.visualstudio.com/ExplicitStatus/_apis/build/status/ExplicitStatus-CI)](https://rickpowell.visualstudio.com/ExplicitStatus/_build/latest?definitionId=3)
 
-Explicit status allow an explicit composition of a status (usually an enum). This is useful (for example) when the addition of members to a type can evolve how a status should be calculated.
+Explicit status allows an explicit composition of a status (usually an enum). This is useful (for example) when the addition of members to a type can evolve how a status should be calculated.
 
 Consider the following:
 
