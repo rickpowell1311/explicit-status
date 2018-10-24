@@ -48,13 +48,15 @@ public class MyType
 
     public MyStatus Status => _myStatus.Get(this);
 
+    public string RequiredField { get; set; }
+
     public MyType()
     {
         _myStatus = StatusBuilder
             .BuildStatus<Status>()
             .FromType<MyType>()
-            .IsStatus(MyStatus.Incomplete).When(x => string.IsNullOrWhiteSpace(x.RequiredField))
-            .IsStatus(MyStatus.Complete).When(x => !string.IsNullOrWhiteSpace(x.RequiredField))
+            .IsStatus(MyStatus.Incomplete).When(x => x.RequiredField, p => string.IsNullOrWhiteSpace(p))
+            .IsStatus(MyStatus.Complete).When(x => x.RequiredField, p => !string.IsNullOrWhiteSpace(p))
             .Build();
     }
 }
@@ -83,8 +85,8 @@ public class MyType
             {
                 config.Ignore(x => x.IrrelevantField);
             })
-            .IsStatus(MyStatus.Incomplete).When(x => string.IsNullOrWhiteSpace(x.RequiredField))
-            .IsStatus(MyStatus.Complete).When(x => !string.IsNullOrWhiteSpace(x.RequiredField))
+            .IsStatus(MyStatus.Incomplete).When(x => x.RequiredField, p => string.IsNullOrWhiteSpace(p))
+            .IsStatus(MyStatus.Complete).When(x => x.RequiredField, p => !string.IsNullOrWhiteSpace(p))
             .Build();
     }
 }
@@ -106,14 +108,14 @@ public class MyType
         _myStatus = StatusBuilder
             .BuildStatus<Status>()
             .FromType<MyType>()
-            .IsStatus(MyStatus.Complete).When(x => !string.IsNullOrWhiteSpace(x.RequiredField))
+            .IsStatus(MyStatus.Complete).When(x => x.RequiredField, p => !string.IsNullOrWhiteSpace(p))
             .IsStatus(MyStatus.Incomplete).ByDefault()
             .Build();
     }
 }
 ```
 
-and statuses cannot be defined more than once or have the same definition (otherwise an AmbiguousStatusException will be thrown):
+and statuses cannot be defined more than once or have the same definition (otherwise an AmbiguousStatusConfigurationException will be thrown):
 
 ```
 public class MyType
