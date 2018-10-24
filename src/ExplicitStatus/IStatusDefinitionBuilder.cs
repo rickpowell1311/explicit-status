@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace ExplicitStatus
 {
     public interface IStatusDefinitionBuilder<T, TStatus>
     {
-        IStatusBuilder<T, TStatus> When(Func<T, bool> condition);
+        IStatusDefinitionChainBuilder<T, TStatus> When<TProp>(Expression<Func<T, TProp>> propertySelector, TProp value);
     }
 }

@@ -1,5 +1,3 @@
-using ExplicitStatus.Internals;
-using System;
 using Xunit;
 
 namespace ExplicitStatus.Tests
@@ -14,8 +12,10 @@ namespace ExplicitStatus.Tests
                 StatusBuilder
                     .BuildStatus<StatusBuilderTestsEnum>()
                     .FromType<StatusBuilderTestsType>()
-                    .IsStatus(StatusBuilderTestsEnum.Test1).When(x => true)
-                    .IsStatus(StatusBuilderTestsEnum.Test1).When(x => true)
+                    .IsStatus(StatusBuilderTestsEnum.Test1)
+                        .When(x => x, null)
+                    .IsStatus(StatusBuilderTestsEnum.Test1)
+                        .When(x => x, null)
                     .Build();
             });
         }

@@ -1,28 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace ExplicitStatus.Internals
 {
     public class StatusDefinitionBuilder<T, TStatus> : IStatusDefinitionBuilder<T, TStatus>
     {
-        public readonly TStatus status;
+        public TStatus Status { get; }
         private readonly StatusBuilder<T, TStatus> statusBuilder;
-
-        public Func<T, bool> Condition { get; private set; }
-
+        private readonly List<Condition> conditions;
 
         internal StatusDefinitionBuilder(StatusBuilder<T, TStatus> statusBuilder, TStatus status)
         {
             this.statusBuilder = statusBuilder;
-            this.status = status;
+            this.Status = status;
+
+            this.conditions = new List<Condition>();
         }
 
-        public IStatusBuilder<T, TStatus> When(Func<T, bool> condition)
+        public IStatusDefinitionChainBuilder<T, TStatus> When<TProp>(Expression<Func<T, TProp>> propertySelector, TProp value)
         {
-            Condition = condition;
+            var condition = new Condition(
+                (object t) => propertySelector.Compile()((T)t), value);
 
-            this.statusBuilder.Add(this.status, this);
+            conditions.Add(condition);
 
-            return this.statusBuilder;
+            return new StatusDefinitionChainBuilder<T, TStatus>(this, this.statusBuilder);
         }
     }
 }
