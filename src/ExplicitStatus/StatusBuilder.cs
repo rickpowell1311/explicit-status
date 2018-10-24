@@ -13,11 +13,13 @@ namespace ExplicitStatus
 
     public interface IStatusBuilder<TStatus>
     {
-        IStatusBuilder<T, TStatus> FromType<T>(Action<IStatusBuilderConfiguration<T, TStatus>> config);
+        IStatusBuilder<T, TStatus> FromType<T>(Action<IStatusBuilderConfiguration<T, TStatus>> config = null);
     }
 
     public interface IStatusBuilder<T, TStatus>
     {
         IStatusDefinitionBuilder<T, TStatus> IsStatus(TStatus status);
+
+        IStatus<T, TStatus> Build();
     }
 }
