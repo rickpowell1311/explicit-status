@@ -13,9 +13,9 @@ namespace ExplicitStatus.Tests
                     .BuildStatus<StatusBuilderTestsEnum>()
                     .FromType<StatusBuilderTestsType>()
                     .IsStatus(StatusBuilderTestsEnum.Test1)
-                        .When(x => x, null)
+                        .When(x => x.Property, p => !p.HasValue)
                     .IsStatus(StatusBuilderTestsEnum.Test1)
-                        .When(x => x, null)
+                        .When(x => x.Property, p => !p.HasValue)
                     .Build();
             });
         }
@@ -23,6 +23,7 @@ namespace ExplicitStatus.Tests
 
     public class StatusBuilderTestsType
     {
+        public int? Property { get; set; }
     }
 
     public enum StatusBuilderTestsEnum

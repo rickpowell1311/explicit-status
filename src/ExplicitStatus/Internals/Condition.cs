@@ -4,25 +4,20 @@ namespace ExplicitStatus.Internals
 {
     public class Condition
     {
-        private readonly Func<object, object> selector;
-        private readonly object value;
+        private readonly string memberId;
+        private readonly Func<object, bool> condition;
 
-        internal Condition(Func<object, object> selector, object value)
+        public string MemberId => this.memberId;
+
+        internal Condition(string memberId, Func<object, bool> condition)
         {
-            this.selector = selector;
-            this.value = value;
+            this.memberId = memberId;
+            this.condition = condition;
         }
 
         public bool IsTrue(object obj)
         {
-            var property = selector(obj);
-
-            if (property == null && this.value == null)
-            {
-                return true;
-            }
-
-            return property.Equals(value);
+            return condition(obj);
         }
     }
 }

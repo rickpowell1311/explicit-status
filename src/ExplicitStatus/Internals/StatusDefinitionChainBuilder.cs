@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace ExplicitStatus.Internals
 {
@@ -13,9 +14,9 @@ namespace ExplicitStatus.Internals
             this.statusBuilder = statusBuilder;
         }
 
-        public IStatusDefinitionChainBuilder<T, TStatus> And<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>> propertySelector, TProp value)
+        public IStatusDefinitionChainBuilder<T, TStatus> And<TProp>(Expression<Func<T, TProp>> propertySelector, Func<TProp, bool> condition)
         {
-            this.statusDefinitionBuilder.When(propertySelector, value);
+            this.statusDefinitionBuilder.When(propertySelector, condition);
 
             return this;
         }

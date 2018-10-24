@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Linq;
 
 namespace ExplicitStatus.Internals
 {
@@ -13,7 +14,77 @@ namespace ExplicitStatus.Internals
 
         public TStatus GetFor(T obj)
         {
-            throw new NotImplementedException();
+            // Apply configuration
+            var configuration = new StatusBuilderConfiguration<T, TStatus>();
+
+            if (this.statusBuilder.Config != null)
+            {
+                this.statusBuilder.Config(configuration);
+            }
+
+            bool matchFound = false;
+            var match = default(TStatus);
+
+            bool defaultMatchFound = false;
+            var defaultMatch = default(TStatus);
+
+            foreach (var definitionBuilder in statusBuilder.Definitions)
+            {
+                var status = definitionBuilder.Key;
+                var conditions = definitionBuilder.Value.Conditions;
+
+                if (definitionBuilder.Value.IsDefault)
+                {
+                    defaultMatchFound = true;
+                    defaultMatch = status;
+                    continue;
+                }
+
+                bool conditionsMatch = true;
+                foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(typeof(T)))
+                {
+                    if (!configuration.Ignored.Contains(property.Name) && !conditions.Select(c => c.MemberId).Contains(property.Name))
+                    {
+                        throw new UndefinedStatusException<T, TStatus>(property.Name);
+                    }
+
+                    if (configuration.Ignored.Contains(property.Name))
+                    {
+                        continue;
+                    }
+
+                    var condition = conditions.Single(c => c.MemberId == property.Name);
+
+                    if (!condition.IsTrue(obj))
+                    {
+                        conditionsMatch = false;
+                        break;
+                    }
+                }
+
+                if (conditionsMatch)
+                {
+                    if (matchFound)
+                    {
+                        throw new AmbiguousStatusException<T, TStatus>(match, status);
+                    }
+
+                    matchFound = true;
+                    match = status;
+                }
+            }
+
+            if (!matchFound)
+            {
+                if (defaultMatchFound)
+                {
+                    return defaultMatch;
+                }
+
+                throw new UndefinedStatusException<T, TStatus>();
+            }
+
+            return match;
         }
     }
 }

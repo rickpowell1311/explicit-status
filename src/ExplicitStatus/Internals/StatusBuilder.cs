@@ -18,12 +18,15 @@ namespace ExplicitStatus.Internals
 
     public class StatusBuilder<T, TStatus> : IStatusBuilder<T, TStatus>
     {
-        private readonly Action<IStatusBuilderConfiguration<T, TStatus>> config;
         private readonly Dictionary<TStatus, StatusDefinitionBuilder<T, TStatus>> definitions;
+
+        public Action<IStatusBuilderConfiguration<T, TStatus>> Config { get; }
+
+        public IEnumerable<KeyValuePair<TStatus, StatusDefinitionBuilder<T, TStatus>>> Definitions => this.definitions;
 
         internal StatusBuilder(Action<IStatusBuilderConfiguration<T, TStatus>> config)
         {
-            this.config = config;
+            Config = config;
             this.definitions = new Dictionary<TStatus, StatusDefinitionBuilder<T, TStatus>>();
         }
 

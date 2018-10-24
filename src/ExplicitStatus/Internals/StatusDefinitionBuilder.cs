@@ -6,26 +6,48 @@ namespace ExplicitStatus.Internals
 {
     public class StatusDefinitionBuilder<T, TStatus> : IStatusDefinitionBuilder<T, TStatus>
     {
-        public TStatus Status { get; }
         private readonly StatusBuilder<T, TStatus> statusBuilder;
         private readonly List<Condition> conditions;
+
+        public TStatus Status { get; }
+
+        public bool IsDefault { get; private set; }
+
+        public IEnumerable<Condition> Conditions => this.conditions;
 
         internal StatusDefinitionBuilder(StatusBuilder<T, TStatus> statusBuilder, TStatus status)
         {
             this.statusBuilder = statusBuilder;
             this.Status = status;
+            this.IsDefault = false;
 
             this.conditions = new List<Condition>();
         }
 
-        public IStatusDefinitionChainBuilder<T, TStatus> When<TProp>(Expression<Func<T, TProp>> propertySelector, TProp value)
+        public IStatusDefinitionChainBuilder<T, TStatus> When<TProp>(Expression<Func<T, TProp>> propertySelector, Func<TProp, bool> condition)
         {
-            var condition = new Condition(
-                (object t) => propertySelector.Compile()((T)t), value);
+            if (condition == null)
+            {
+                throw new ArgumentException($"Condition for status '{Status.ToString()}' from type '{typeof(T).Name}' cannot be null");
+            }
 
-            conditions.Add(condition);
+            if (!(propertySelector.Body is MemberExpression memberExpression))
+            {
+                throw new InvalidOperationException($"Cannot define condition for member of type '{typeof(TProp).Name}' in type '{typeof(T).Name}'");
+            }
+
+            conditions.Add(new Condition(
+                memberExpression.Member.Name,
+                (object t) => condition(propertySelector.Compile()((T)t))));
 
             return new StatusDefinitionChainBuilder<T, TStatus>(this, this.statusBuilder);
+        }
+
+        public IStatusBuilder<T, TStatus> ByDefault()
+        {
+            IsDefault = true;
+
+            return this.statusBuilder;
         }
     }
 }
