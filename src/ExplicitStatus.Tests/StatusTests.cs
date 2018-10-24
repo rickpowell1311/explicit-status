@@ -5,7 +5,7 @@ namespace ExplicitStatus.Tests
     public class StatusTests
     {
         [Fact]
-        public void Status_WhenNotAllPropertiesDefined_ThrowsUndefinedStatusException()
+        public void Status_WhenNotAllPropertiesDefined_ThrowsInvalidStatusConfigurationException()
         {
             var status = StatusBuilder.BuildStatus<StatusTestsEnum>()
                 .FromType<StatusTestsType>()
@@ -13,7 +13,7 @@ namespace ExplicitStatus.Tests
                     .When(x => x.Property1, p => !p.HasValue)
                 .Build();
 
-            Assert.Throws<UndefinedStatusException<StatusTestsType, StatusTestsEnum>>(
+            Assert.Throws<InvalidStatusConfigurationException<StatusTestsType, StatusTestsEnum>>(
                 () => status.GetFor(new StatusTestsType()));
         }
 

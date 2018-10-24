@@ -16,12 +16,9 @@ namespace ExplicitStatus.Internals
         {
             // Apply configuration
             var configuration = new StatusBuilderConfiguration<T, TStatus>();
+            this.statusBuilder.Config?.Invoke(configuration);
 
-            if (this.statusBuilder.Config != null)
-            {
-                this.statusBuilder.Config(configuration);
-            }
-
+            // Find matching status
             bool matchFound = false;
             var match = default(TStatus);
 
@@ -45,7 +42,7 @@ namespace ExplicitStatus.Internals
                 {
                     if (!configuration.Ignored.Contains(property.Name) && !conditions.Select(c => c.MemberId).Contains(property.Name))
                     {
-                        throw new UndefinedStatusException<T, TStatus>(property.Name);
+                        throw new InvalidStatusConfigurationException<T, TStatus>(status, property.Name);
                     }
 
                     if (configuration.Ignored.Contains(property.Name))

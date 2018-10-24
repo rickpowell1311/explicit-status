@@ -62,7 +62,7 @@ public class MyType
 }
 ```
 
-When a new field is added an UndefinedStatusException will be thrown giving details of which type member has not been explicitly defined in a status definition.
+When a new field is added an InvalidStatusConfigurationException will be thrown giving details of which type member has not been explicitly defined in a status definition.
 
 Note that not all members need to be mapped in status definitions:
 
